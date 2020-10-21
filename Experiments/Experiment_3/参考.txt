@@ -1,0 +1,97 @@
+import socket
+import threading
+
+import re
+
+Dict = {}
+
+def tcplink(sock, addr):
+    global Dict
+    print('Accept new connection from %s:%s...' % addr)
+    sock.send(b'Welcome!')
+
+    data1 = sock.recv(1024)
+    data1 = data1.decode('utf-8')
+    # sock.send(('你的名字：%s' % data1.encode('utf-8')).encode('utf-8'))
+    Dict[data1] = sock
+    print(Dict)
+
+    while True:
+        findall = []
+
+        data = sock.recv(1024)
+
+        data = data.decode('utf-8')
+        findall = re.findall('[a-z]+', data)
+        print(findall)
+
+        if findall[0] == 'find':
+            sock.send(Dict[2].encode('utf-8'))
+
+            # for i in Dict.values():
+                # sock.send(('%s' % i.encode('utf-8')).encode('utf-8'))
+        elif findall[0] == 'send':
+            Dict[findall[1]].send(findall[2].encode('utf-8'))
+
+
+    sock.close()
+    print('Connection from %s:%s closed.' % addr)
+
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind(('192.168.43.74', 9999))
+s.listen(5)
+print("Waiting for connection")
+
+while True:
+    sock, addr = s.accept()
+    t = threading.Thread(target=tcplink, args=(sock, addr))
+    t.start()
+
+
+
+
+
+import socket
+import json
+
+s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+s.connect(('192.168.43.74',9999))
+print(s.recv(1024).decode('utf-8'))
+
+a=input()
+message = a.encode('utf-8')
+s.send(message)
+
+while True:
+    print(s.recv(1024).decode('utf-8'))
+    a=input()
+    message = a.encode('utf-8')
+    s.send(message)
+
+s.send(b'exit')
+s.close()
+
+
+
+
+
+import socket
+import json
+
+s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+s.connect(('192.168.43.74',9999))
+print(s.recv(1024).decode('utf-8'))
+
+a=input()
+message = a.encode('utf-8')
+s.send(message)
+
+while True:
+    a=input()
+    message = a.encode('utf-8')
+    s.send(message)
+    print(s.recv(1024).decode('utf-8'))
+s.send(b'exit')
+s.close()
+
