@@ -1,0 +1,13 @@
+<h2>name</h2>
+<p>{{ people.name_text }}</p>
+
+<h2>number</h2>
+{% for number in people.phone_set.all %}
+<p>{{number}}</p>
+{% endfor %}
+
+<h2>address</h2>
+{% for address in people.address_set.all %}
+<p>{{address}}</p>
+{% endfor %}
+

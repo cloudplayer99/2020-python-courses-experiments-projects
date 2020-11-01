@@ -1,0 +1,15 @@
+<h1>通讯录</h1>
+<form action="/contact/search"method="post">
+{% csrf_token %}
+<input type="text" name="q">
+<input type="submit" value="search">
+</form>
+{% if people_list %}
+    <ul>
+    {% for people in people_list %}
+        <p>name</p><li><a href="/contact/{{people.id}}/">{{people.name_text}}</a> </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>查无此人</p>
+{% endif %}
